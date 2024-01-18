@@ -18,10 +18,12 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <Layout>
-      {isLoading ? <span>loading..</span> : <Component {...pageProps} />}
-    </Layout>
+    <>
+      {isLoading ? null : (
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      )}
+    </>
   );
 }
-
-// TODO: LOADING 컴포넌트 생성

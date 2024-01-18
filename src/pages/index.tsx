@@ -1,42 +1,43 @@
-import { db } from "@/firebase";
-import { addDoc, collection } from "firebase/firestore";
-import { useForm } from "react-hook-form";
-
-// * TEST: Upload data to DB ✅
-
-interface IForm {
-  text: string;
+interface INews {
+  Title: string;
+  Date: String;
+  Link: string;
+  Type: "공지" | "점검" | "상점" | "이벤트";
 }
 
-export default function Home() {
-  // <form>
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<IForm>();
-  const onValid = async ({ text }: IForm) => {
-    await addDoc(collection(db, "temp"), {
-      text,
-    });
-    reset();
-  };
+interface IHomeProps {
+  news: INews[];
+}
 
+export default function Home({ news }: IHomeProps) {
   return (
-    <form
-      onSubmit={handleSubmit(onValid)}
-      className="flex flex-col p-4 bg-red-200 space-y-2"
-    >
-      <input
-        {...register("text", { required: "TEXT is required." })}
-        type="text"
-        className="border-2 border-blue-500"
-      />
-      <button className="border-2 border-white bg-blue-500 text-white hover:bg-blue-600 transition-colors">
-        Submit
-      </button>
-      {errors.text ? <p>{errors.text.message}</p> : null}
-    </form>
+    <>
+      <ul>
+        {news.slice(0, 5).map((v, i) => (
+          <>
+            <li key={i}>
+              <p>{v.Type}</p>
+              <p>{v.Title}</p>
+              <p>{v.Date}</p>
+              <p>{v.Link}</p>
+            </li>
+            <hr className="h-6" />
+          </>
+        ))}
+      </ul>
+    </>
   );
+}
+
+export async function getServerSideProps() {
+  const news: INews[] = await (
+    await fetch("https://developer-lostark.game.onstove.com/news/notices", {
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `bearer ${process.env.LOSTARK_API_KEY}`,
+      },
+    })
+  ).json();
+
+  return { props: { news } };
 }

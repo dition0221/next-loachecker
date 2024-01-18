@@ -6,9 +6,9 @@ interface ILayoutProps {
 
 export default function Layout({ children }: ILayoutProps) {
   return (
-    <div>
+    <>
       <Nav />
-      {children}
-    </div>
+      <main className="max-w-5xl m-auto p-2">{children}</main>
+    </>
   );
 }
