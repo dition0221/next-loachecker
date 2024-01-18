@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { auth } from "@/firebase";
+// Components
+import Layout from "@/components/Layout";
 
 export default function App({ Component, pageProps }: AppProps) {
   // Show loading screen while checking firebase authentication
@@ -15,5 +17,11 @@ export default function App({ Component, pageProps }: AppProps) {
     init();
   }, []);
 
-  return <>{isLoading ? "Loading.." : <Component {...pageProps} />}</>;
+  return (
+    <Layout>
+      {isLoading ? <span>loading..</span> : <Component {...pageProps} />}
+    </Layout>
+  );
 }
+
+// TODO: LOADING 컴포넌트 생성

@@ -14,3 +14,5 @@
     - ✅ Initial checking firebase authentication in App
   - TEST
     - ✅ Upload data to Firestore DB
+- **24-01-18 / Layout**
+  - UPDATE : Create 'Layout.tsx'
