@@ -71,3 +71,11 @@
          }
          ```
        - 사용법 : 클래스명으로 `font-프로퍼티명`으로 사용
+- **24-01-19 / Character List**
+  - _TODO 였던 것_
+    - _[CheckBox] 캐릭터마다 객체를 만들어야 함 - 캐릭터 prop 받아오기_
+    - _첫 로그인 시 API를 사용해 캐릭터 리스트 받아오기_
+  - _TODO_
+    - _Protected page : getServerSideProps()를 이용_
+    - _로그인 후, 첫 체커 시작 시 API를 사용해 캐릭터 리스트 받아오기_
+  - _ISSUE : firestore에 배열로 저장하는 방법_

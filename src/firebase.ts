@@ -17,3 +17,6 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+// DB collection name
+export const CHECKER = "Checker";

@@ -1,6 +1,6 @@
 interface INews {
   Title: string;
-  Date: String;
+  Date: string;
   Link: string;
   Type: "공지" | "점검" | "상점" | "이벤트";
 }
@@ -14,17 +14,18 @@ export default function Home({ news }: IHomeProps) {
     <>
       <ul>
         {news.slice(0, 5).map((v, i) => (
-          <>
-            <li key={i}>
-              <p>{v.Type}</p>
-              <p>{v.Title}</p>
-              <p>{v.Date}</p>
-              <p>{v.Link}</p>
-            </li>
+          <li key={i}>
+            <p>{v.Type}</p>
+            <a href={v.Link} target="_blank">
+              {v.Title}
+            </a>
+            <p>{v.Date}</p>
             <hr className="h-6" />
-          </>
+          </li>
         ))}
       </ul>
+
+      <hr className="h-0.5 bg-black w-full" />
     </>
   );
 }

@@ -1,14 +1,33 @@
-import { auth } from "@/firebase";
-import { FirebaseError } from "firebase/app";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+// FIREBASE
+import { auth } from "@/firebase";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+
+/* interface ICharacter {
+  ServerName: string;
+  CharacterName: string;
+  CharacterLevel: 0;
+  CharacterClassName: string;
+  ItemAvgLevel: string;
+  ItemMaxLevel: string;
+}
+
+interface ILoginProps {
+  characters: ICharacter[];
+} */
+
+interface IForm {
+  nickname: string;
+}
 
 export default function Login() {
-  const [error, setError] = useState("");
   const router = useRouter();
 
   // Login with google account
+  const [loginError, setLoginError] = useState("");
   const getLogin = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -16,9 +35,17 @@ export default function Login() {
       router.push("/");
     } catch (e) {
       console.log(e);
-      if (e instanceof FirebaseError) setError(e.message);
+      if (e instanceof FirebaseError) setLoginError(e.message);
     }
   };
+
+  // <form>
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IForm>();
+  const onValid = () => {};
 
   return (
     <>
@@ -35,11 +62,41 @@ export default function Login() {
         </svg>
         <span>Google Login</span>
       </button>
-      {error ? (
+      {loginError ? (
         <p className="text-lg text-red-500 underline italic text-center">
-          {error}
+          {loginError}
         </p>
       ) : null}
+
+      <form onSubmit={handleSubmit(onValid)} className="flex flex-col">
+        <input
+          {...register("nickname", {
+            maxLength: {
+              value: 12,
+              message: "캐릭터 닉네임은 12글자 내로 적어주세요.",
+            },
+          })}
+          type="text"
+        />
+        <button>제출</button>
+      </form>
     </>
   );
 }
+
+/* export async function getServerSideProps() {
+  const characters = await (
+    await fetch(
+      "https://developer-lostark.game.onstove.com/characters/디택티드/siblings",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${process.env.LOSTARK_API_KEY}`,
+        },
+      }
+    )
+  ).json();
+
+  return { props: { characters } };
+}
+ */
